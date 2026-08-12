@@ -275,3 +275,20 @@ p {
   left: 0;
   color: var(--accent);
 }
+
+
+/* Completely disable scrolling */
+html, body {
+  overflow: hidden; /* no scrollbars, no scrolling */
+}
+
+/* OR: Hide scrollbar but keep scrolling */
+html, body {
+  overflow: auto; /* allow scrolling */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
