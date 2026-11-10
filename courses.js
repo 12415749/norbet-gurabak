@@ -83,3 +83,146 @@ function animate() {
 }
 
 animate();
+
+
+
+// ============================================================
+// COURSE FILTERS, SEARCH, MOBILE MENU & SCROLL REVEAL
+// (independent of Three.js)
+// ============================================================
+
+(function () {
+
+  // ----------------------------------------------------------
+  // MOBILE MENU TOGGLE
+  // ----------------------------------------------------------
+
+  const nav = document.querySelector('.top-nav');
+  const toggle = document.querySelector('.menu-toggle');
+
+  if (nav && toggle) {
+    const setOpen = (open) => {
+      nav.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open ? '✕' : '☰';
+    };
+
+    toggle.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+    nav.querySelectorAll('.nav-links a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    window.addEventListener('resize', () => { if (window.innerWidth >= 768) setOpen(false); });
+  }
+
+
+  // ----------------------------------------------------------
+  // FILTER + SEARCH
+  // Status filters: all | done | current | upcoming
+  // ----------------------------------------------------------
+
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const searchInput = document.querySelector('#course-search');
+  const noResults = document.querySelector('#no-results');
+  const yearSections = document.querySelectorAll('.year-section');
+
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    let visibleCards = 0;
+
+    yearSections.forEach((section) => {
+      let sectionHasVisible = false;
+
+      section.querySelectorAll('.semester-card').forEach((card) => {
+        const status = card.dataset.status;
+        const statusMatch = activeFilter === 'all' || status === activeFilter;
+
+        // Search inside individual subjects
+        const items = card.querySelectorAll('.subject-list li');
+        let itemMatches = 0;
+
+        items.forEach((li) => {
+          const match = !query || li.textContent.toLowerCase().includes(query);
+          li.hidden = !match;
+          li.classList.toggle('highlight', Boolean(query) && match);
+          if (match) itemMatches++;
+        });
+
+        // Semester titles can also match (e.g. "semester 5")
+        const titleText = (card.querySelector('h3')?.textContent || '').toLowerCase();
+        const titleMatch = query && titleText.includes(query);
+
+        if (titleMatch) {
+          items.forEach((li) => { li.hidden = false; li.classList.remove('highlight'); });
+        }
+
+        const searchMatch = !query || titleMatch || itemMatches > 0;
+        const show = statusMatch && searchMatch;
+
+        card.hidden = !show;
+        if (show) {
+          sectionHasVisible = true;
+          visibleCards++;
+        }
+      });
+
+      section.hidden = !sectionHasVisible;
+    });
+
+    if (noResults) {
+      noResults.hidden = visibleCards > 0;
+    }
+  }
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.filter || 'all';
+      filterButtons.forEach((b) => {
+        const isActive = b === btn;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-pressed', String(isActive));
+      });
+      applyFilters();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
+
+
+  // ----------------------------------------------------------
+  // SCROLL REVEAL
+  // ----------------------------------------------------------
+
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!('IntersectionObserver' in window) || reduceMotion) return;
+
+  const targets = document.querySelectorAll('.card, .timeline-item, .project-card');
+
+  targets.forEach((el) => {
+    const siblings = el.parentElement ? Array.from(el.parentElement.children) : [];
+    el.style.transitionDelay = `${Math.min(Math.max(0, siblings.indexOf(el)), 5) * 70}ms`;
+    el.classList.add('reveal');
+  });
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      el.classList.add('is-visible');
+      obs.unobserve(el);
+
+      const cleanup = (e) => {
+        if (e.target !== el || e.propertyName !== 'opacity') return;
+        el.classList.remove('reveal', 'is-visible');
+        el.style.transitionDelay = '';
+        el.removeEventListener('transitionend', cleanup);
+      };
+      el.addEventListener('transitionend', cleanup);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  targets.forEach((el) => observer.observe(el));
+})();

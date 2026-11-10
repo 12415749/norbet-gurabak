@@ -29,7 +29,31 @@ if (!canvas) {
         2000
     );
 
-    camera.position.set(0, 0, 35);
+    // ========================================================
+    // RESPONSIVE LAYOUT
+    // Desktop: black hole sits to the right of the content.
+    // Tablet: pulled closer to the centre.
+    // Mobile (< 768px): centred behind the hero, camera pulled
+    // back so the accretion disk is not cut off.
+    // ========================================================
+
+    function getLayout() {
+        const w = window.innerWidth;
+
+        if (w < 768) {
+            return { x: 0, y: 6, z: -6, cameraZ: 68 };
+        }
+
+        if (w <= 1024) {
+            return { x: 9, y: 2, z: -4, cameraZ: 44 };
+        }
+
+        return { x: 15, y: 1, z: -3, cameraZ: 35 };
+    }
+
+    let layout = getLayout();
+
+    camera.position.set(0, 0, layout.cameraZ);
 
 
     // ========================================================
@@ -60,8 +84,9 @@ if (!canvas) {
 
     const blackHoleSystem = new THREE.Group();
 
-    // Put the black hole toward the right side.
-    blackHoleSystem.position.set(15, 1, -3);
+    // Position depends on screen size (right side on desktop,
+    // centred on mobile).
+    blackHoleSystem.position.set(layout.x, layout.y, layout.z);
 
     // Tilt the whole system slightly.
     blackHoleSystem.rotation.x =
@@ -484,6 +509,13 @@ if (!canvas) {
 
             camera.updateProjectionMatrix();
 
+            // Re-evaluate responsive layout
+            layout = getLayout();
+
+            camera.position.z = layout.cameraZ;
+
+            blackHoleSystem.position.z = layout.z;
+
 
             renderer.setSize(
                 window.innerWidth,
@@ -540,13 +572,9 @@ if (!canvas) {
         // Black hole rotation
         // -----------------------------------------------
 
-        accretionDisk.rotation.z =
-            elapsed * 0.45;
-            mouseX * 0.15;
+        accretionDisk.rotation.z = elapsed * 0.45 + mouseX * 0.15;
 
-        innerRing.rotation.z =
-            elapsed * 0.6;
-            mouseX * 0.2;
+        innerRing.rotation.z = elapsed * 0.6 + mouseX * 0.2;
 
         outerRing.rotation.z =
             -elapsed * 0.15;
@@ -649,10 +677,10 @@ blackHoleSystem.rotation.z =
 // ========================================================
 
 const targetBlackHoleX =
-    15 + mouseX * 2.5;
+    layout.x + mouseX * 2.5;
 
 const targetBlackHoleY =
-    1 - mouseY * 1.5;
+    layout.y - mouseY * 1.5;
 
 
 blackHoleSystem.position.x =
@@ -688,3 +716,101 @@ blackHoleSystem.position.y =
         "🌌 Cosmic Black Hole initialized successfully."
     );
 }
+
+
+
+// ============================================================
+// UI ENHANCEMENTS (independent of Three.js)
+// - Mobile hamburger menu
+// - Scroll-reveal animations
+// ============================================================
+
+(function () {
+
+    // --------------------------------------------------------
+    // MOBILE MENU TOGGLE
+    // --------------------------------------------------------
+
+    const nav = document.querySelector(".top-nav");
+    const toggle = document.querySelector(".menu-toggle");
+
+    if (nav && toggle) {
+
+        const setOpen = (open) => {
+            nav.classList.toggle("open", open);
+            toggle.setAttribute("aria-expanded", String(open));
+            toggle.textContent = open ? "✕" : "☰";
+        };
+
+        toggle.addEventListener("click", () => {
+            setOpen(!nav.classList.contains("open"));
+        });
+
+        // Close the menu after a link is tapped
+        nav.querySelectorAll(".nav-links a").forEach((link) => {
+            link.addEventListener("click", () => setOpen(false));
+        });
+
+        // Close on Escape
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") setOpen(false);
+        });
+
+        // Reset when resizing up to desktop
+        window.addEventListener("resize", () => {
+            if (window.innerWidth >= 768) setOpen(false);
+        });
+    }
+
+
+    // --------------------------------------------------------
+    // SCROLL REVEAL
+    // --------------------------------------------------------
+
+    const prefersReducedMotion =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!("IntersectionObserver" in window) || prefersReducedMotion) {
+        return; // Content simply stays visible
+    }
+
+    const targets = document.querySelectorAll(
+        ".card, .timeline-item, .project-card"
+    );
+
+    targets.forEach((el) => {
+        // Small stagger for siblings in the same grid/timeline
+        const siblings = el.parentElement
+            ? Array.from(el.parentElement.children)
+            : [];
+        const index = Math.max(0, siblings.indexOf(el));
+        el.style.transitionDelay = `${Math.min(index % 6, 5) * 70}ms`;
+        el.classList.add("reveal");
+    });
+
+    const observer = new IntersectionObserver(
+        (entries, obs) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+
+                const el = entry.target;
+                el.classList.add("is-visible");
+                obs.unobserve(el);
+
+                // Once revealed, drop the helper classes so normal
+                // hover transitions are not affected.
+                const cleanup = (e) => {
+                    if (e.target !== el || e.propertyName !== "opacity") return;
+                    el.classList.remove("reveal", "is-visible");
+                    el.style.transitionDelay = "";
+                    el.removeEventListener("transitionend", cleanup);
+                };
+                el.addEventListener("transitionend", cleanup);
+            });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+})();

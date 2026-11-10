@@ -4,49 +4,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Subjects</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+  <!-- Navigation -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">N.I. Gurabak</a>
+      <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">← Back to Portfolio</a></li>
+        <li><a href="index.html#achievements">Journey</a></li>
+        <li><a href="index.html#publications">Research &amp; Projects</a></li>
+        <li><a href="courses.html" class="active" aria-current="page">Courses</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <!-- 3D Canvas Background (Particle Field) -->
   <canvas id="webgl-canvas"></canvas>
-
-  <!-- Navigation -->
-  <nav class="nav-bar">
-    <a href="index.html" class="nav-link">← Back to Portfolio</a>
-  </nav>
 
   <!-- Content Layer -->
   <main class="container">
     <header class="page-header">
       <span class="badge">Academic Journey</span>
-      <h1>Coursework & Subjects</h1>
-      <p class="tagline">A semester-by-semester breakdown of completed, current & Upcoming studies.</p>
+      <h1>Coursework &amp; Subjects</h1>
+      <p class="tagline">A semester-by-semester breakdown of completed, current &amp; upcoming studies.</p>
     </header>
+
+    <!-- Filter & Search Controls -->
+    <div class="course-controls">
+      <div class="filter-group" role="group" aria-label="Filter semesters by status">
+        <button class="filter-btn active" data-filter="all" aria-pressed="true">All Semesters</button>
+        <button class="filter-btn" data-filter="done" aria-pressed="false">Completed</button>
+        <button class="filter-btn" data-filter="current" aria-pressed="false">Current</button>
+        <button class="filter-btn" data-filter="upcoming" aria-pressed="false">Upcoming</button>
+      </div>
+      <input type="search" id="course-search" class="course-search" placeholder="Search subjects..." aria-label="Search subjects" autocomplete="off" />
+    </div>
+    <p class="no-results" id="no-results" hidden>No subjects match your search.</p>
 
     <!-- Year 1 -->
     <section class="year-section">
       <h2 class="year-title">Year 1</h2>
       <div class="semester-grid">
-        <div class="card semester-card">
-          <h3>Semester 1 <span class="done-tag">(Done)</h3>
+        <div class="card semester-card" data-status="done">
+          <h3>Semester 1 <span class="done-tag">(Done)</span></h3>
           <ul class="subject-list">
             <li>Program Orientation 1</li>
             <li>Biotechnology for Beginners</li>
-            <li>Biosafety & Bioethics</li>
+            <li>Biosafety &amp; Bioethics</li>
             <li>Engineering Chemistry</li>
-            <li>Engineering Chemistry Labortory</li>
-            <li>Electrical & Electroniccs Engineering</li>
-            <li>Electrical & Electronics Engineering Laboratory</li>
+            <li>Engineering Chemistry Laboratory</li>
+            <li>Electrical &amp; Electronics Engineering</li>
+            <li>Electrical &amp; Electronics Engineering Laboratory</li>
             <li>Remedial Mathematics</li>
-            <li>Professional & Enhancement Skills</li>
-            <li>Cell & Molecular Biology</li>
-
+            <li>Professional &amp; Enhancement Skills</li>
+            <li>Cell &amp; Molecular Biology</li>
           </ul>
         </div>
-        <div class="card semester-card">
-          <h3>Semester 2 <span class="done-tag">(Done)</h3>
+        <div class="card semester-card" data-status="done">
+          <h3>Semester 2 <span class="done-tag">(Done)</span></h3>
           <ul class="subject-list">
             <li>C Programming</li>
             <li>Engineering Physics</li>
@@ -54,10 +79,9 @@
             <li>Differential Equations 2</li>
             <li>Environmental Studies</li>
             <li>Advanced Communication Skills</li>
-            <li>Engineering Graphics & DIgital Manufacturing 124 (Sketching)</li>
-            <li>Engineering Graphics & DIgital Manufacturing 125 Using Creo software</li>
-            <li>Differential Equations 2</li>
-            <li>Human Values & Program Orinetation</li>
+            <li>Engineering Graphics &amp; Digital Manufacturing 124 (Sketching)</li>
+            <li>Engineering Graphics &amp; Digital Manufacturing 125 Using Creo software</li>
+            <li>Human Values &amp; Program Orientation</li>
             <li>Bioanalytical Techniques</li>
           </ul>
         </div>
@@ -68,8 +92,8 @@
     <section class="year-section">
       <h2 class="year-title">Year 2</h2>
       <div class="semester-grid">
-        <div class="card semester-card">
-          <h3>Semester 3 <span class="done-tag">(Done)</h3>
+        <div class="card semester-card" data-status="done">
+          <h3>Semester 3 <span class="done-tag">(Done)</span></h3>
           <ul class="subject-list">
             <li>Python</li>
             <li>Biochemistry</li>
@@ -84,19 +108,19 @@
             <li>Community Development Project</li>
           </ul>
         </div>
-        <div class="card semester-card">
+        <div class="card semester-card" data-status="done">
           <h3>Semester 4 <span class="done-tag">(Done)</span></h3>
           <ul class="subject-list">
-            <li>AI, ML & Energing Technologies</li>
-            <li>Biomaterials & Artificial Organs</li>
-            <li>Biopprocess Engineering</li>
+            <li>AI, ML &amp; Emerging Technologies</li>
+            <li>Biomaterials &amp; Artificial Organs</li>
+            <li>Bioprocess Engineering</li>
             <li>Bioprocess Engineering Laboratory</li>
-            <li>Immunology & Immunotechnology</li>
-            <li>Immunology & Immunotechnology Laboratory</li>
+            <li>Immunology &amp; Immunotechnology</li>
+            <li>Immunology &amp; Immunotechnology Laboratory</li>
             <li>Recombinant DNA Technology</li>
             <li>Recombinant DNA Technology Laboratory</li>
             <li>Structural Biology</li>
-            <li>Synthetic & Systems Biology</li>
+            <li>Synthetic &amp; Systems Biology</li>
             <li>Psychological Testing</li>
           </ul>
         </div>
@@ -107,24 +131,24 @@
     <section class="year-section">
       <h2 class="year-title">Year 3</h2>
       <div class="semester-grid">
-        <div class="card semester-card">
+        <div class="card semester-card" data-status="current">
           <h3>Semester 5 <span class="current-tag">(Current)</span></h3>
           <ul class="subject-list">
             <li>BioPython</li>
             <li>Bioseparation Engineering</li>
             <li>Metabolic Engineering</li>
             <li>Bioseparation Engineering Laboratory</li>
-            <li>Bioinformatics & Computational Biology</li>
-            <li>Bioinformatics & Computational Biology Laboratory</li>
+            <li>Bioinformatics &amp; Computational Biology</li>
+            <li>Bioinformatics &amp; Computational Biology Laboratory</li>
             <li>Rational Drug Discovery</li>
-            <li>Quality Control & Quality Assurance</li>
+            <li>Quality Control &amp; Quality Assurance</li>
             <li>Positive Psychology</li>
             <li>Psychology of Higher Performance</li>
             <li>Seminar of Summer Training</li>
           </ul>
         </div>
-        <div class="card semester-card">
-          <h3>Semester 6 <span class="upcoming-tag">(Upcoming)</h3>
+        <div class="card semester-card" data-status="upcoming">
+          <h3>Semester 6 <span class="upcoming-tag">(Upcoming)</span></h3>
             <h6>Courses will be listed here during semester 6!</h6>
           <!--<ul class="subject-list">
             <li>...</li>
@@ -140,8 +164,8 @@
     <section class="year-section">
       <h2 class="year-title">Year 4</h2>
       <div class="semester-grid">
-        <div class="card semester-card">
-          <h3>Semester 7 <span class="upcoming-tag">(Upcoming)</h3>
+        <div class="card semester-card" data-status="upcoming">
+          <h3>Semester 7 <span class="upcoming-tag">(Upcoming)</span></h3>
             <h6>Courses will be listed here during semester 7!</h6>
           <!--<ul class="subject-list">
             <li>Senior Capstone Project I</li>
@@ -150,8 +174,8 @@
             <li>Elective III: Quantum Computing</li>
           </ul> -->
         </div>
-        <div class="card semester-card">
-          <h3>Semester 8 <span class="upcoming-tag">(Upcoming)</h3>
+        <div class="card semester-card" data-status="upcoming">
+          <h3>Semester 8 <span class="upcoming-tag">(Upcoming)</span></h3>
             <h6>Courses will be listed here during semester 8!</h6>
           <!--<ul class="subject-list">
             <li>Senior Capstone Project II</li>
@@ -161,9 +185,12 @@
           </ul> -->
         </div>
       </div>
-        <br>
-       <h4>Confirm the courses by clicking this link: <span class="badge"><a href="https://www.lpu.in/programmes/engineering/b-tech-biotechnology"
-        target="_blank">LPU BTech Biotechnology</a></span>
+    </section>
+
+    <!-- Verification Note (kept outside the year sections so filtering never hides it) -->
+    <section class="card course-note">
+      <h4>Confirm the courses by clicking this link: <span class="badge"><a href="https://www.lpu.in/programmes/engineering/b-tech-biotechnology"
+        target="_blank" rel="noopener">LPU BTech Biotechnology</a></span>
         <br><br>Some courses may have changed due to current trend in the market and workplace!</h4>
     </section>
   </main>

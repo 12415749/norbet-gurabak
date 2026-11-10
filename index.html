@@ -4,23 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Academic Portfolio | Norbet I. Gurabak</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+  <!-- Sticky Glassmorphic Navigation -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">N.I. Gurabak</a>
+      <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#achievements">Journey</a></li>
+        <li><a href="#publications">Research &amp; Projects</a></li>
+        <li><a href="#internships">Internships</a></li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <!-- 3D Canvas Background -->
   <canvas id="webgl-canvas"></canvas>
 
   <!-- Content Layer -->
   <main class="container">
     <header class="hero">
-        <!--Profile Picture-->
-        <div class="avatar-container">
-            <img src="propic5.png" alt="Profile Photo" class="avatar-img"/>
-            <img src="flag.png" alt="Country Flag" class="flag-badge"/>
-        </div>
-      <span class="badge">Academic & Research Portfolio</span>
+      <!--Profile Picture-->
+      <div class="avatar-container">
+        <img src="propic5.png" alt="Profile Photo" class="avatar-img"/>
+        <img src="flag.png" alt="Country Flag" class="flag-badge"/>
+      </div>
+      <span class="badge">Academic &amp; Research Portfolio</span>
       <h1>Norbet I. Gurabak</h1>
       <p class="tagline">A third year BTech Biotechnology Student of Lovely Professional University (LPU)<br>
       <i>One of India's top private universities that holds A++ grade from NAAC</i></p>
@@ -31,15 +52,15 @@
       </div>
     </header>
 
+    <!-- About -->
     <section id="about" class="card">
-      <h2>About Me
-         <span class="badge"><a href="https://drive.google.com/file/d/1U-JM1fQOOh3bNmgazbBtH5ffmRGUVHnO/view?usp=sharing"
-          target="_blank">
-        View CV</a></span>
-         <span class="badge"><a href="https://drive.google.com/file/d/1LUhs_PQPXwBNNcyBu68Pn1freco14A1x/view?usp=sharing"
-          target="_blank">
-        View Resumae</a></span>
-      </h2>
+      <div class="section-header">
+        <h2>About Me</h2>
+        <div class="action-pills">
+          <a class="pill" href="https://drive.google.com/file/d/1U-JM1fQOOh3bNmgazbBtH5ffmRGUVHnO/view?usp=sharing" target="_blank" rel="noopener">View CV</a>
+          <a class="pill" href="https://drive.google.com/file/d/1LUhs_PQPXwBNNcyBu68Pn1freco14A1x/view?usp=sharing" target="_blank" rel="noopener">View Resume</a>
+        </div>
+      </div>
       <p>
         I’m a B.Tech Biotechnology student at Lovely Professional University
         passionate about the intersection of biotechnology, AI, bioinformatics,
@@ -55,158 +76,215 @@
       </p>
     </section>
 
+    <!-- Achievements / Journey Timeline -->
     <section id="achievements" class="card">
-      <h2>Achievements</h2>
-      <div class="pub-item">
-        <h3>Completed 10th Grade at Saidor High School</h3>
-        <p class="meta">One of hard-working High Schools in Rai Coast Dist.</p>
-      </div>
-       <div class="pub-item">
-        <h3>Completed 12th Grade at Passam National School of Excellence</h3>
-        <p class="meta">One of top NSoEs in Papua New Guinea</p>
-      </div>
-       <div class="pub-item">
-        <h3>Obtained Diploma in STEM plus the 12th grade certificate</h3>
-        <p class="meta">Studied both Outcome based curriculum and STEM (new) curriculum simultaneously</p>
-      </div>
-       <div class="pub-item">
-        <h3>Semester 1 at PNG Universituy of Technology</h3>
-        <p class="meta">Completed semester 1 as an Agriculture student in PNG Unitech in 2024</p>
-      </div>
-       <div class="pub-item">
-        <h3>PNG Government STEM Scholarship</h3>
-        <p class="meta">Awarded STEM scholarship by PNG government to study in India - 2024</p>
-      </div>
-       <div class="pub-item">
-        <h3>Lovely Professional University LPU - India</h3>
-        <p class="meta">Selected to study Bachelor of Technology in Biotechnology at LPU in 2024</p>
-      </div>
-       <div class="pub-item">
-        <h3>Current Status</h3>
-        <p class="meta">Currently (2026) doing third year at LPU</p>
+      <h2>Achievements &amp; Journey</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-badge">High School</span>
+          <h3>Completed 10th Grade at Saidor High School</h3>
+          <p class="meta">One of hard-working High Schools in Rai Coast Dist.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-badge">NSoE</span>
+          <h3>Completed 12th Grade at Passam National School of Excellence</h3>
+          <p class="meta">One of top NSoEs in Papua New Guinea</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-badge">High School &amp; NSoE</span>
+          <h3>Obtained Diploma in STEM plus the 12th grade certificate</h3>
+          <p class="meta">Studied both Outcome based curriculum and STEM (new) curriculum simultaneously</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-badge">2024</span>
+          <h3>Semester 1 at PNG University of Technology</h3>
+          <p class="meta">Completed semester 1 as an Agriculture student in PNG Unitech in 2024</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-badge">2024</span>
+          <h3>PNG Government STEM Scholarship</h3>
+          <p class="meta">Awarded STEM scholarship by PNG government to study in India - 2024</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-badge">2024 - Present</span>
+          <h3>Lovely Professional University LPU - India</h3>
+          <p class="meta">Selected to study Bachelor of Technology in Biotechnology at LPU in 2024</p>
+        </div>
+        <div class="timeline-item current">
+          <span class="timeline-badge">2026</span>
+          <h3>Current Status</h3>
+          <p class="meta">Currently (2026) doing third year at LPU</p>
+        </div>
       </div>
     </section>
 
+    <!-- Featured Research & Projects -->
+    <section id="publications" class="card">
+      <h2>Featured Research &amp; Projects</h2>
+      <div class="project-grid">
+        <article class="project-card featured">
+          <span class="project-tag">Flagship Initiative</span>
+          <h3>Unified Biological Operating System (BiOS)</h3>
+          <p class="meta">Current research and project on BiOS, 2026 onwards</p>
+        </article>
+        <article class="project-card featured">
+          <span class="project-tag">Published Book</span>
+          <h3>Published Book</h3>
+          <p class="meta">Published a book on Amazon on the topic, The New Frontier of Economy: How Space Mining Will Change Everything</p>
+          <a class="btn book-btn" href="https://amzn.in/d/05clrHQ0" target="_blank" rel="noopener">📖 New Frontier of Economy</a>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Software</span>
+          <h3>Employee Payroll System</h3>
+          <p class="meta">Used C POP language to develop payroll system for businesses 2024-2025</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Quantum &amp; Hardware</span>
+          <h3>Arduino Based RADAR</h3>
+          <p class="meta">Developed Arduino based RADAR sensor as part of Electrical Engineering project, 2024</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Quantum &amp; Hardware</span>
+          <h3>Direct Air Electrolyzer (DAE)</h3>
+          <p class="meta">Developed a working prototype of DAE as part of Engineering Physics project
+            to demonstrate wave function concept in Quantum Mechanics.</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Biotech Lab</span>
+          <h3>Enzymatic Degradation of Plastics</h3>
+          <p class="meta">Worked on a lab-based project on demonstrating how to produce degradable plastics</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">AI / ML</span>
+          <h3>AI Model for Breast Cancer</h3>
+          <p class="meta">Developed a simple AI model to distinguish between malignant and benign cells in breast cancer</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Research Review</span>
+          <h3>Review Paper 1</h3>
+          <p class="meta">Wrote a review paper on Bioanalytical Techniques including Liquid Chromatography</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Research Review</span>
+          <h3>Review Paper 2</h3>
+          <p class="meta">Wrote a review article on Naïve Bayes Classifier in Biomedical Data Classification: Strengths,
+            Limitations, and Case Studies</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Research Review</span>
+          <h3>Review Paper 3</h3>
+          <p class="meta">Wrote a review paper on Hemocompatibility Testing
+            as part of Biomaterials &amp; Artificial Organs course</p>
+        </article>
+        <article class="project-card">
+          <span class="project-tag">Research Review</span>
+          <h3>Book Chapter</h3>
+          <p class="meta">Written a Book Chapter on the topic Ethical and Professional Issues in Psychological Testing
+            as part of the course, Psychological Testing</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Internships -->
+    <section id="internships" class="card">
+      <h2>Internships</h2>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <span class="issuer-badge">Mathi Life Sciences</span>
+          <h3>Bioinformatics &amp; Computational Biology</h3>
+          <p class="meta">Completed a full internship on bioinformatics &amp; computational biology
+            from Mathi Life Sciences</p>
+        </div>
+        <div class="cert-card">
+          <span class="issuer-badge">Mathi Life Sciences</span>
+          <h3>Zebra Fish</h3>
+          <p class="meta">Completed a certified internship on zebra fish from Mathi Life Sciences.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications -->
     <section id="certifications" class="card">
       <h2>Other Certifications</h2>
-       <div class="pub-item">
-        <h3>Python for Scientific Research</h3>
-        <p class="meta">Obtained certificate in Pyton for Scientific research from Udemy</p>
-      </div>
-       <div class="pub-item">
-        <h3>Experimental Biochemistry</h3>
-        <p class="meta">Obtained MOOC certificate in Experimental Biochemisty from NPTEL</p>
-      </div>
-       <div class="pub-item">
-        <h3>Hone Communication Skills</h3>
-        <p class="meta">Obtained certificate in Hone Communications skills from LPU</p>
-      </div>
-       <div class="pub-item">
-        <h3>Quantum Computational Biology</h3>
-        <p class="meta">Obtained certificate in Quantum Computational Biology from Udemy</p>
-      </div>
-      <div class="pub-item">
-        <h3>Multipass & VM Security</h3>
-        <p class="meta">Obtained certificate in Multipass & VM Secutiry from Udemy</p>
-      </div>
-      <div class="pub-item">
-        <h3>Bioinformatics & Computatinal Biology</h3>
-        <p class="meta">Obtained internship certificate on bioinformatics & computatinal biology
-          from Mathi Life Science</p>
-      </div>
-      <div class="pub-item">
-        <h3>Zebra Fish</h3>
-        <p class="meta">Obtained internship certificate on Zebra Fish
-          from Mathi Life Science</p>
-      </div>
-    </section>
-
-    <section id="certifications" class="card">
-      <h2>Internships</h2>
-       <div class="pub-item">
-        <h3>Bioinformatics & Computational Biology</h3>
-        <p class="meta">Completed a full internship on bioinformatics & computational biology
-          from Mathi Life Sciences</p>
-      </div>
-       <div class="pub-item">
-        <h3>Zebra Fish</h3>
-        <p class="meta">Completed a certified internship on zebra fish from Mathi Life Sciences.</p>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <span class="issuer-badge">Udemy</span>
+          <h3>Python for Scientific Research</h3>
+          <p class="meta">Obtained certificate in Python for Scientific Research from Udemy</p>
+        </div>
+        <div class="cert-card">
+          <span class="issuer-badge">NPTEL</span>
+          <h3>Experimental Biochemistry</h3>
+          <p class="meta">Obtained MOOC certificate in Experimental Biochemistry from NPTEL</p>
+        </div>
+        <div class="cert-card">
+          <span class="issuer-badge">LPU</span>
+          <h3>Hone Communication Skills</h3>
+          <p class="meta">Obtained certificate in Hone Communications skills from LPU</p>
+        </div>
+        <div class="cert-card">
+          <span class="issuer-badge">Udemy</span>
+          <h3>Quantum Computational Biology</h3>
+          <p class="meta">Obtained certificate in Quantum Computational Biology from Udemy</p>
+        </div>
+        <div class="cert-card">
+          <span class="issuer-badge">Udemy</span>
+          <h3>Multipass &amp; VM Security</h3>
+          <p class="meta">Obtained certificate in Multipass &amp; VM Security from Udemy</p>
+        </div>
+        <div class="cert-card">
+          <span class="issuer-badge">Mathi Life Sciences</span>
+          <h3>Bioinformatics &amp; Computational Biology</h3>
+          <p class="meta">Obtained internship certificate on bioinformatics &amp; computational biology
+            from Mathi Life Sciences</p>
+        </div>
+        <div class="cert-card">
+          <span class="issuer-badge">Mathi Life Sciences</span>
+          <h3>Zebra Fish</h3>
+          <p class="meta">Obtained internship certificate on Zebra Fish
+            from Mathi Life Sciences</p>
+        </div>
       </div>
     </section>
 
-    <section id="publications" class="card">
-      <h2>Featured Research & Projects</h2>
-      <div class="pub-item">
-        <h3>Unified Biological Operating System (BiOS)</h3>
-        <p class="meta">Current research and project on BiOS, 2026 onwards</p>
-      </div>
-      <div class="pub-item">
-        <h3>Employee Payroll System</h3>
-        <p class="meta">Used C POP language to develop payroll system for businesses 2024-2025</p>
-      </div>
-      <div class="pub-item">
-        <h3>Arduino Based RADAR</h3>
-        <p class="meta">Developed Arduino based RADAR sensor as part of Electrical Engineering project, 2024</p>
-      </div>
-       <div class="pub-item">
-        <h3>Direct Air Electrolyzer (DAE)</h3>
-        <p class="meta">Developed a working prototype of DAE as part of Engineering Physics project
-          to demonstrate wave funcition concept in Quantum Mechanics.
-        </p>
-      </div>
-       <div class="pub-item">
-        <h3>Enzymatic Degradation of Plastics</h3>
-        <p class="meta">Worked on a lab-based project on demonstrating how to produce degradable plastics</p>
-      </div>
-       <div class="pub-item">
-        <h3>AI Model for Breast Cancer</h3>
-        <p class="meta">Developed a simple AI model to distinguished betweein malignant and benign cells in breast cancer</p>
-      </div>
-       <div class="pub-item">
-        <h3>Review Paper 1</h3>
-        <p class="meta">Wrote a review paper on Bioanalytical Techniques including Liquid Chromatograpy
-        </p>
-      </div>
-       <div class="pub-item">
-        <h3>Review Paper 2</h3>
-        <p class="meta">Write a review article on Naïve Bayes Classifier in Biomedical Data Classification: Strengths,
-          Limitations, and Case Studies  </p>
-      </div>
-       <div class="pub-item">
-        <h3>Review Paper 3</h3>
-        <p class="meta">Wrote a review paper on Hemocompatibility Testing
-          as part of Biomaterials & Artificial Organs course
-        </p>
-      </div>
-       <div class="pub-item">
-        <h3>Book Chapter</h3>
-        <p class="meta">Written a Book Chapter on the topic Ethical and Professional Issues in Psychological Testing
-          as part of the course, Psychological Testing
-        </p>
-      </div>
-      <div class="pub-item">
-        <h3>Published Book</h3>
-        <p class="meta">Published a book on Amazon on the topic, The New Frontier of Economy: How pace mining
-          will change everything
-        </p>
-        <p>View the book here: <span class="badge"><a href="https://amzn.in/d/05clrHQ0"
-          target="_blank">New Frontier of Economy</a></span></p>
-      </div>
-    </section>
-
+    <!-- Contact -->
     <section id="contact" class="card">
       <h2>Contact</h2>
-      <p>Email 1: <span class="badge"><a href="mailto:norbet.12415749@lpu.in">norbet.12415749@lpu.in</a></span></p>
-      <br>
-      <p>Alternative: <span class="badge"><a href="mailto:giiliibronzgurabak0.2@gmail.com">giiliibronzgurabak0.2@gmail.com</a></span></p>
-      <br>
-      <p>GitHub: <span class="badge"><a href="https://github.com/12415749" target="_blank">github.com/12415749/ </a></span></p>
-      <br>
-      <!--<p>Scholar: <span class="badge"><a href="" target="_blank">Google Scholar Profile</a></span></p>-->
-      <p>LinkedIn: <span class="badge"><a href ="https://www.linkedin.com/in/gurabak01" target="_blank">linkedin.com.in/gurabak01</a></span></p>
-      <br>
-      <p>Mobile #: +91 6283512081 | +675 79664246 (Both on WhatsApp)</p>
-
+      <div class="contact-grid">
+        <a class="contact-card" href="mailto:norbet.12415749@lpu.in">
+          <span class="contact-icon" aria-hidden="true">✉️</span>
+          <span class="contact-label">Primary Email</span>
+          <span class="contact-value">norbet.12415749@lpu.in</span>
+        </a>
+        <a class="contact-card" href="mailto:giiliibronzgurabak0.2@gmail.com">
+          <span class="contact-icon" aria-hidden="true">📧</span>
+          <span class="contact-label">Alternative Email</span>
+          <span class="contact-value">giiliibronzgurabak0.2@gmail.com</span>
+        </a>
+        <a class="contact-card" href="https://github.com/12415749" target="_blank" rel="noopener">
+          <span class="contact-icon" aria-hidden="true">💻</span>
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">github.com/12415749</span>
+        </a>
+        <!--<a class="contact-card" href="" target="_blank" rel="noopener">
+          <span class="contact-label">Scholar</span>
+          <span class="contact-value">Google Scholar Profile</span>
+        </a>-->
+        <a class="contact-card" href="https://www.linkedin.com/in/gurabak01" target="_blank" rel="noopener">
+          <span class="contact-icon" aria-hidden="true">🔗</span>
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">linkedin.com/in/gurabak01</span>
+        </a>
+        <div class="contact-card contact-wide">
+          <span class="contact-icon" aria-hidden="true">📱</span>
+          <span class="contact-label">WhatsApp / Phone (Both on WhatsApp)</span>
+          <span class="contact-value">
+            <a href="https://wa.me/916283512081" target="_blank" rel="noopener">+91 6283512081</a>
+            <span class="contact-sep">/</span>
+            <a href="https://wa.me/67579664246" target="_blank" rel="noopener">+675 79664246</a>
+          </span>
+        </div>
+      </div>
     </section>
   </main>
 
