@@ -588,6 +588,30 @@ p {
   box-shadow: 0 10px 28px rgba(139, 92, 246, 0.5);
 }
 
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.tech-tag {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #c7d2fe;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(129, 140, 248, 0.28);
+  border-radius: 6px;
+}
+
+:root[data-theme="light"] .tech-tag {
+  color: #3730a3;
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(79, 70, 229, 0.25);
+}
+
 
 /* =========================================================
    CERT GRID (Internships & Certifications)
