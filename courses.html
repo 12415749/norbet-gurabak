@@ -8,11 +8,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    /* Apply saved theme before first paint to avoid a flash */
+    try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
   <link rel="stylesheet" href="style.css" />
   <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+  <!-- Cosmic Preloader -->
+  <div id="preloader" role="status" aria-live="polite">
+    <div class="preloader-ring" aria-hidden="true"></div>
+    <p class="preloader-text">Loading Universe...</p>
+  </div>
+
   <!-- Navigation -->
   <nav class="top-nav">
     <div class="nav-inner">
@@ -25,6 +35,7 @@
         <li><a href="courses.html" class="active" aria-current="page">Courses</a></li>
         <li><a href="index.html#contact">Contact</a></li>
       </ul>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">☀️</button>
     </div>
   </nav>
 

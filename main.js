@@ -814,3 +814,85 @@ blackHoleSystem.position.y =
 
     targets.forEach((el) => observer.observe(el));
 })();
+
+
+
+// ============================================================
+// PHASE 2: PRELOADER, TILT, THEME TOGGLE
+// ============================================================
+
+(function () {
+
+    // --------------------------------------------------------
+    // PRELOADER
+    // --------------------------------------------------------
+
+    const preloader = document.getElementById("preloader");
+
+    function hidePreloader() {
+        if (preloader) preloader.classList.add("fade-out");
+    }
+
+    if (document.readyState === "complete") {
+        hidePreloader();
+    } else {
+        window.addEventListener("load", hidePreloader);
+        // Safety net: never trap the user behind the loader if a CDN stalls
+        setTimeout(hidePreloader, 8000);
+    }
+
+
+    // --------------------------------------------------------
+    // VANILLA TILT (project + certification cards)
+    // --------------------------------------------------------
+
+    const reduceMotion =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (typeof VanillaTilt !== "undefined" && !reduceMotion) {
+        VanillaTilt.init(document.querySelectorAll(".project-card, .cert-card"), {
+            max: 15,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
+        });
+    }
+
+
+    // --------------------------------------------------------
+    // THEME TOGGLE (dark / light, persisted)
+    // --------------------------------------------------------
+
+    const themeBtn = document.getElementById("theme-toggle");
+    const root = document.documentElement;
+
+    function applyTheme(theme) {
+        if (theme === "light") {
+            root.setAttribute("data-theme", "light");
+        } else {
+            root.removeAttribute("data-theme");
+        }
+        if (themeBtn) {
+            // Icon shows what you will switch TO
+            themeBtn.textContent = theme === "light" ? "🌙" : "☀️";
+            themeBtn.setAttribute(
+                "aria-label",
+                theme === "light" ? "Switch to dark theme" : "Switch to light theme"
+            );
+        }
+    }
+
+    let saved = null;
+    try { saved = localStorage.getItem("theme"); } catch (e) { /* storage unavailable */ }
+
+    applyTheme(saved === "light" ? "light" : "dark");
+
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+            applyTheme(next);
+            try { localStorage.setItem("theme", next); } catch (e) { /* ignore */ }
+        });
+    }
+})();

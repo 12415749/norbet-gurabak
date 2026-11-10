@@ -8,11 +8,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    /* Apply saved theme before first paint to avoid a flash */
+    try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
   <link rel="stylesheet" href="style.css" />
   <!-- Three.js Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+  <!-- Cosmic Preloader -->
+  <div id="preloader" role="status" aria-live="polite">
+    <div class="preloader-ring" aria-hidden="true"></div>
+    <p class="preloader-text">Initializing BiOS...</p>
+  </div>
+
   <!-- Sticky Glassmorphic Navigation -->
   <nav class="top-nav">
     <div class="nav-inner">
@@ -27,6 +37,7 @@
         <li><a href="courses.html">Courses</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">☀️</button>
     </div>
   </nav>
 
@@ -43,8 +54,7 @@
       </div>
       <span class="badge">Academic &amp; Research Portfolio</span>
       <h1>Norbet I. Gurabak</h1>
-      <p class="tagline">A third year BTech Biotechnology Student of Lovely Professional University (LPU)<br>
-      <i>One of India's top private universities that holds A++ grade from NAAC</i></p>
+      <p class="tagline">B.Tech Biotechnology Scholar at Lovely Professional University (NAAC A++) | Bridging Biology, Computation, and AI.</p>
       <div class="cta-buttons">
         <a href="#publications" class="btn secondary">Projects</a>
         <a href="courses.html" target="_blank" class="btn secondary">Courses Studied</a>
@@ -62,17 +72,14 @@
         </div>
       </div>
       <p>
-        I’m a B.Tech Biotechnology student at Lovely Professional University
-        passionate about the intersection of biotechnology, AI, bioinformatics,
-        and computational biology.
-
-        I’m currently building Alien Star, an early-stage initiative exploring
-        a Biology Operating System that connects biological data, AI, and computational tools.
-
-        I’m focused on learning, building, and solving real-world biological
-        problems through technology with a long-term goal of contributing to the future of
-        computational and AI-driven biotechnology.
-        <br><br>Interested in Space Exploration, expanding scale and scope of human consciousness (Mars Colonization)
+        I am a Biotechnology scholar passionate about the convergence of biological sciences,
+        artificial intelligence, and computational biology. I am currently developing
+        <strong>Alien Star</strong>, an initiative exploring a unified Biological Operating System (BiOS)
+        designed to seamlessly integrate biological data with AI-driven computational tools.
+        My focus is on leveraging technology to solve complex real-world biological challenges,
+        with a long-term vision of advancing computational biotechnology. I also hold a deep interest
+        in space exploration and the expansion of human consciousness, including the prospects of
+        Mars colonization.
       </p>
     </section>
 
@@ -288,6 +295,7 @@
     </section>
   </main>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

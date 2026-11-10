@@ -226,3 +226,63 @@ animate();
 
   targets.forEach((el) => observer.observe(el));
 })();
+
+
+
+// ============================================================
+// PHASE 2: PRELOADER & THEME TOGGLE
+// ============================================================
+
+(function () {
+
+  // ----------------------------------------------------------
+  // PRELOADER
+  // ----------------------------------------------------------
+
+  const preloader = document.getElementById('preloader');
+
+  function hidePreloader() {
+    if (preloader) preloader.classList.add('fade-out');
+  }
+
+  if (document.readyState === 'complete') {
+    hidePreloader();
+  } else {
+    window.addEventListener('load', hidePreloader);
+    // Safety net: never trap the user behind the loader if a CDN stalls
+    setTimeout(hidePreloader, 8000);
+  }
+
+
+  // ----------------------------------------------------------
+  // THEME TOGGLE (dark / light, persisted)
+  // ----------------------------------------------------------
+
+  const themeBtn = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    if (themeBtn) {
+      themeBtn.textContent = theme === 'light' ? '🌙' : '☀️';
+      themeBtn.setAttribute('aria-label', theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+    }
+  }
+
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (e) { /* storage unavailable */ }
+
+  applyTheme(saved === 'light' ? 'light' : 'dark');
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      applyTheme(next);
+      try { localStorage.setItem('theme', next); } catch (e) { /* ignore */ }
+    });
+  }
+})();

@@ -1,5 +1,6 @@
 :root {
   --bg-color: #0b0f19;
+  --page-bg: #000;
   --text-primary: #f3f4f6;
   --text-secondary: #9ca3af;
   --accent: #6366f1;
@@ -42,7 +43,7 @@ html::-webkit-scrollbar {
 body {
   font-family: var(--font-body);
 
-  background-color: #000;
+  background-color: var(--page-bg);
   color: var(--text-primary);
 
   overflow-x: hidden;
@@ -1344,4 +1345,224 @@ a.contact-card:focus-visible {
     font-size: 1.45rem;
   }
 
+}
+
+
+
+/* =========================================================
+   PRELOADER
+========================================================= */
+
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+
+  background: radial-gradient(circle at 50% 45%, #14143a 0%, #050510 65%);
+  color: #c7d2fe;
+
+  opacity: 1;
+  visibility: visible;
+}
+
+#preloader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  pointer-events: none;
+}
+
+.preloader-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+
+  border: 3px solid rgba(129, 140, 248, 0.15);
+  border-top-color: #818cf8;
+  border-right-color: #a78bfa;
+
+  box-shadow: 0 0 24px rgba(129, 140, 248, 0.55), inset 0 0 18px rgba(139, 92, 246, 0.35);
+  animation: preloader-spin 1s linear infinite, preloader-pulse 1.8s ease-in-out infinite;
+}
+
+.preloader-text {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c7d2fe;
+  animation: preloader-fade 1.8s ease-in-out infinite;
+}
+
+@keyframes preloader-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes preloader-pulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(129, 140, 248, 0.4), inset 0 0 12px rgba(139, 92, 246, 0.25); }
+  50% { box-shadow: 0 0 40px rgba(167, 139, 250, 0.85), inset 0 0 24px rgba(139, 92, 246, 0.5); }
+}
+
+@keyframes preloader-fade {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+
+/* =========================================================
+   THEME TOGGLE BUTTON
+========================================================= */
+
+.theme-toggle {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--text-primary);
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--glow-border);
+  background: rgba(99, 102, 241, 0.15);
+  transform: rotate(15deg);
+}
+
+@media (max-width: 767px) {
+  .nav-brand { margin-right: auto; }
+  .theme-toggle { order: 2; }
+  .menu-toggle { order: 3; }
+}
+
+
+/* =========================================================
+   LIGHT THEME (Clean Light)
+========================================================= */
+
+:root[data-theme="light"] {
+  --bg-color: #f8fafc;
+  --page-bg: #f8fafc;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --accent: #4f46e5;
+  --accent-violet: #7c3aed;
+  --accent-soft: #4338ca;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-strong: rgba(255, 255, 255, 0.94);
+  --glass-border: rgba(15, 23, 42, 0.12);
+  --glow-border: rgba(79, 70, 229, 0.55);
+  --glow-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2), 0 8px 28px rgba(79, 70, 229, 0.2);
+}
+
+/* The dark starfield/black hole is inverted and softened so it blends
+   with the light background instead of washing out. */
+:root[data-theme="light"] #webgl-canvas {
+  filter: invert(1) hue-rotate(180deg);
+  opacity: 0.4;
+}
+
+:root[data-theme="light"] .top-nav {
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+}
+
+:root[data-theme="light"] .nav-brand {
+  background: linear-gradient(90deg, #4338ca, #6d28d9);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+:root[data-theme="light"] .nav-links a:hover,
+:root[data-theme="light"] .nav-links a:focus-visible,
+:root[data-theme="light"] .nav-links a.active,
+:root[data-theme="light"] .filter-btn:hover,
+:root[data-theme="light"] .filter-btn:focus-visible,
+:root[data-theme="light"] .contact-value a:hover {
+  color: #1e1b4b;
+}
+
+:root[data-theme="light"] h2,
+:root[data-theme="light"] .semester-card h3,
+:root[data-theme="light"] .subject-list li.highlight,
+:root[data-theme="light"] .year-title {
+  color: #1e1b4b;
+}
+
+:root[data-theme="light"] .badge,
+:root[data-theme="light"] .timeline-badge,
+:root[data-theme="light"] .project-tag,
+:root[data-theme="light"] .contact-value,
+:root[data-theme="light"] .contact-value a {
+  color: #3730a3;
+}
+
+:root[data-theme="light"] .badge a,
+:root[data-theme="light"] .pill {
+  color: #312e81;
+}
+
+:root[data-theme="light"] .meta {
+  color: #4f46e5;
+}
+
+:root[data-theme="light"] .issuer-badge {
+  color: #0e7490;
+}
+
+:root[data-theme="light"] .project-card,
+:root[data-theme="light"] .cert-card,
+:root[data-theme="light"] .contact-card {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+:root[data-theme="light"] .project-card.featured {
+  background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.06));
+}
+
+:root[data-theme="light"] .btn.secondary,
+:root[data-theme="light"] .filter-btn,
+:root[data-theme="light"] .menu-toggle,
+:root[data-theme="light"] .theme-toggle {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+:root[data-theme="light"] .filter-btn.active {
+  color: #1e1b4b;
+}
+
+:root[data-theme="light"] .course-search {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text-primary);
+}
+
+:root[data-theme="light"] .course-search::placeholder {
+  color: #94a3b8;
+}
+
+:root[data-theme="light"] .avatar-img {
+  border-color: rgba(15, 23, 42, 0.15);
+}
+
+:root[data-theme="light"] .timeline-item::before {
+  border-color: #ffffff;
+}
+
+:root[data-theme="light"] .book-btn,
+:root[data-theme="light"] .book-btn:hover {
+  color: #ffffff;
 }
