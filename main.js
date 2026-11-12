@@ -31,24 +31,34 @@ if (!canvas) {
 
     // ========================================================
     // RESPONSIVE LAYOUT
-    // Desktop: black hole sits to the right of the content.
-    // Tablet: pulled closer to the centre.
-    // Mobile (< 768px): centred behind the hero, camera pulled
-    // back so the accretion disk is not cut off.
+    // Desktop: black hole sits to the right, solar system on
+    // the upper-left slightly deeper in Z.
+    // Tablet: scaled down solar system tucked upper-left.
+    // Mobile (< 768px): black hole centred behind hero, solar
+    // system scaled down in the lower-left background.
     // ========================================================
 
     function getLayout() {
         const w = window.innerWidth;
 
         if (w < 768) {
-            return { x: 0, y: 6, z: -6, cameraZ: 68 };
+            return {
+                x: 0, y: 6, z: -6, cameraZ: 68,
+                solarX: -14, solarY: -18, solarZ: -18, solarScale: 0.55
+            };
         }
 
         if (w <= 1024) {
-            return { x: 9, y: 2, z: -4, cameraZ: 44 };
+            return {
+                x: 9, y: 2, z: -4, cameraZ: 44,
+                solarX: -15, solarY: 9, solarZ: -16, solarScale: 0.75
+            };
         }
 
-        return { x: 15, y: 1, z: -3, cameraZ: 35 };
+        return {
+            x: 15, y: 1, z: -3, cameraZ: 35,
+            solarX: -19, solarY: 7, solarZ: -14, solarScale: 1.0
+        };
     }
 
     let layout = getLayout();
@@ -468,6 +478,167 @@ if (!canvas) {
 
 
     // ========================================================
+    // 3D SOLAR SYSTEM (STATIONARY NEIGHBOURING STAR SYSTEM)
+    // ========================================================
+
+    const solarSystem = new THREE.Group();
+
+    solarSystem.position.set(
+        layout.solarX,
+        layout.solarY,
+        layout.solarZ
+    );
+
+    solarSystem.scale.setScalar(layout.solarScale);
+
+    // 3D perspective tilt complementing the accretion disk
+    const baseSolarRotX = 0.55;
+    const baseSolarRotZ = -0.2;
+
+    solarSystem.rotation.x = baseSolarRotX;
+    solarSystem.rotation.z = baseSolarRotZ;
+
+    scene.add(solarSystem);
+
+    // Subtle ambient fill + warm solar point light
+    const ambientLight = new THREE.AmbientLight(0x4b5563, 0.75);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.PointLight(0xffdd66, 2.4, 120);
+    solarSystem.add(sunLight);
+
+    // The Sun (core + inner & outer corona glow)
+    const sunGeometry = new THREE.SphereGeometry(1.75, 48, 48);
+    const sunMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffdd66
+    });
+    const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
+    solarSystem.add(sunMesh);
+
+    const sunCoronaInner = new THREE.Mesh(
+        new THREE.SphereGeometry(2.25, 32, 32),
+        new THREE.MeshBasicMaterial({
+            color: 0xffaa22,
+            transparent: true,
+            opacity: 0.35,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        })
+    );
+    solarSystem.add(sunCoronaInner);
+
+    const sunCoronaOuter = new THREE.Mesh(
+        new THREE.SphereGeometry(3.2, 32, 32),
+        new THREE.MeshBasicMaterial({
+            color: 0xff7711,
+            transparent: true,
+            opacity: 0.14,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        })
+    );
+    solarSystem.add(sunCoronaOuter);
+
+    // Planet definitions (Mercury through Neptune)
+    const planetConfigs = [
+        { name: "Mercury", radius: 3.0, size: 0.2,  color: 0x9c8f84, emissive: 0x26211d, orbitSpeed: 1.55, selfSpeed: 0.9,  phase: 0.4 },
+        { name: "Venus",   radius: 4.1, size: 0.32, color: 0xe6a84c, emissive: 0x3b2508, orbitSpeed: 1.15, selfSpeed: 0.65, phase: 1.9 },
+        { name: "Earth",   radius: 5.5, size: 0.36, color: 0x2299dd, emissive: 0x082a40, orbitSpeed: 0.9,  selfSpeed: 1.6,  phase: 3.1, hasMoon: true },
+        { name: "Mars",    radius: 6.9, size: 0.27, color: 0xd95338, emissive: 0x3a1108, orbitSpeed: 0.72, selfSpeed: 1.4,  phase: 4.7 },
+        { name: "Jupiter", radius: 8.8, size: 0.78, color: 0xd99b66, emissive: 0x331f0e, orbitSpeed: 0.43, selfSpeed: 2.1,  phase: 1.1 },
+        { name: "Saturn",  radius: 11.2, size: 0.64, color: 0xe3c178, emissive: 0x332810, orbitSpeed: 0.31, selfSpeed: 1.85, phase: 2.6, hasRings: true },
+        { name: "Uranus",  radius: 13.4, size: 0.45, color: 0x66d9e8, emissive: 0x0b3138, orbitSpeed: 0.22, selfSpeed: 1.3,  phase: 5.2 },
+        { name: "Neptune", radius: 15.3, size: 0.43, color: 0x3b5bdb, emissive: 0x0a1440, orbitSpeed: 0.16, selfSpeed: 1.25, phase: 0.85 }
+    ];
+
+    const planets = [];
+    let moonPivot = null;
+
+    planetConfigs.forEach((cfg) => {
+        // Subtle circular orbit line in the X/Z plane
+        const orbitSegments = 128;
+        const orbitVertices = [];
+        for (let i = 0; i < orbitSegments; i++) {
+            const theta = (i / orbitSegments) * Math.PI * 2;
+            orbitVertices.push(
+                new THREE.Vector3(
+                    Math.cos(theta) * cfg.radius,
+                    0,
+                    Math.sin(theta) * cfg.radius
+                )
+            );
+        }
+        const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitVertices);
+        const orbitMaterial = new THREE.LineBasicMaterial({
+            color: 0x818cf8,
+            transparent: true,
+            opacity: 0.15
+        });
+        const orbitLine = new THREE.LineLoop(orbitGeometry, orbitMaterial);
+        solarSystem.add(orbitLine);
+
+        // Planet carrier group + sphere mesh
+        const holder = new THREE.Group();
+        solarSystem.add(holder);
+
+        const planetGeometry = new THREE.SphereGeometry(cfg.size, 28, 28);
+        const planetMaterial = new THREE.MeshStandardMaterial({
+            color: cfg.color,
+            emissive: cfg.emissive,
+            roughness: 0.7,
+            metalness: 0.1
+        });
+        const planetMesh = new THREE.Mesh(planetGeometry, planetMaterial);
+        holder.add(planetMesh);
+
+        // Earth's orbiting Moon
+        if (cfg.hasMoon) {
+            moonPivot = new THREE.Group();
+            holder.add(moonPivot);
+
+            const moonGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+            const moonMaterial = new THREE.MeshStandardMaterial({
+                color: 0xd1d5db,
+                emissive: 0x22262e,
+                roughness: 0.85
+            });
+            const moonMesh = new THREE.Mesh(moonGeometry, moonMaterial);
+            moonMesh.position.set(0.72, 0.08, 0);
+            moonPivot.add(moonMesh);
+        }
+
+        // Saturn's tilted planetary ring system
+        if (cfg.hasRings) {
+            const saturnRingGeometry = new THREE.RingGeometry(
+                cfg.size * 1.4,
+                cfg.size * 2.35,
+                64
+            );
+            const saturnRingMaterial = new THREE.MeshBasicMaterial({
+                color: 0xe8cfa0,
+                transparent: true,
+                opacity: 0.65,
+                side: THREE.DoubleSide
+            });
+            const saturnRing = new THREE.Mesh(saturnRingGeometry, saturnRingMaterial);
+            saturnRing.rotation.x = Math.PI / 2 - 0.32;
+            saturnRing.rotation.y = 0.2;
+            holder.add(saturnRing);
+        }
+
+        planets.push({
+            holder: holder,
+            mesh: planetMesh,
+            radius: cfg.radius,
+            orbitSpeed: cfg.orbitSpeed,
+            selfSpeed: cfg.selfSpeed,
+            phase: cfg.phase
+        });
+    });
+
+
+    // ========================================================
     // MOUSE
     // ========================================================
 
@@ -515,6 +686,9 @@ if (!canvas) {
             camera.position.z = layout.cameraZ;
 
             blackHoleSystem.position.z = layout.z;
+
+            solarSystem.position.z = layout.solarZ;
+            solarSystem.scale.setScalar(layout.solarScale);
 
 
             renderer.setSize(
@@ -601,6 +775,29 @@ if (!canvas) {
 
         stars.rotation.y =
             elapsed * 0.008;
+
+
+        // -----------------------------------------------
+        // Solar System orbits & axial spins
+        // -----------------------------------------------
+
+        sunMesh.rotation.y = elapsed * 0.25;
+
+        const sunPulse = 1 + Math.sin(elapsed * 2.0) * 0.05;
+        sunCoronaInner.scale.setScalar(sunPulse);
+        sunCoronaOuter.scale.setScalar(1 + Math.cos(elapsed * 1.4) * 0.06);
+
+        for (let i = 0; i < planets.length; i++) {
+            const p = planets[i];
+            const angle = p.phase + elapsed * p.orbitSpeed;
+            p.holder.position.x = Math.cos(angle) * p.radius;
+            p.holder.position.z = Math.sin(angle) * p.radius;
+            p.mesh.rotation.y = elapsed * p.selfSpeed;
+        }
+
+        if (moonPivot) {
+            moonPivot.rotation.y = elapsed * 3.4;
+        }
 
 
         // ========================================================
@@ -694,6 +891,52 @@ blackHoleSystem.position.y =
     THREE.MathUtils.lerp(
         blackHoleSystem.position.y,
         targetBlackHoleY,
+        0.025
+    );
+
+
+// ========================================================
+// SOLAR SYSTEM MOUSE INTERACTION & PARALLAX
+// ========================================================
+
+const targetSolarRotY = mouseX * 0.18;
+const targetSolarRotX = baseSolarRotX + mouseY * 0.12;
+
+solarSystem.rotation.y =
+    THREE.MathUtils.lerp(
+        solarSystem.rotation.y,
+        targetSolarRotY,
+        0.035
+    );
+
+solarSystem.rotation.x =
+    THREE.MathUtils.lerp(
+        solarSystem.rotation.x,
+        targetSolarRotX,
+        0.035
+    );
+
+solarSystem.rotation.z =
+    THREE.MathUtils.lerp(
+        solarSystem.rotation.z,
+        baseSolarRotZ,
+        0.035
+    );
+
+const targetSolarX = layout.solarX + mouseX * 2.0;
+const targetSolarY = layout.solarY - mouseY * 1.2;
+
+solarSystem.position.x =
+    THREE.MathUtils.lerp(
+        solarSystem.position.x,
+        targetSolarX,
+        0.025
+    );
+
+solarSystem.position.y =
+    THREE.MathUtils.lerp(
+        solarSystem.position.y,
+        targetSolarY,
         0.025
     );
 
